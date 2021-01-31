@@ -4,7 +4,7 @@ import random
 from flask import Flask
 from flask import render_template
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 color_codes = {
     "red": "#e74c3c",
@@ -23,12 +23,12 @@ color = os.environ.get('APP_COLOR') or random.choice(
 def main():
     # return "Welcome! Update 2"
     print(color)
-    return render_template('./templates/hello.html', name=socket.gethostname(), color=color_codes[color])
+    return render_template('hello.html', name=socket.gethostname(), color=color_codes[color])
 
 
 @app.route('/color/<new_color>')
 def new_color(new_color):
-    return render_template('./templates/hello.html', name=socket.gethostname(), color=color_codes[new_color])
+    return render_template('hello.html', name=socket.gethostname(), color=color_codes[new_color])
 
 
 @app.route('/how are you')
@@ -40,7 +40,7 @@ def hello():
 def read_file():
     f = open("/data/testfile.txt")
     contents = f.read()
-    return render_template('./templates/hello.html', name=socket.gethostname(), contents=contents, color=color_codes[color])
+    return render_template('hello.html', name=socket.gethostname(), contents=contents, color=color_codes[color])
 
 
 if __name__ == '__main__':
