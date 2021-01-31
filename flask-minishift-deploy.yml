@@ -1,0 +1,32 @@
+kind: DeploymentConfig
+apiVersion: v1
+metadata:
+  name: flask-minishift-docker
+spec:
+  template:
+    metadata:
+      labels:
+        name: flask-minishift-docker
+    spec:
+      containers:
+        - name: flask-minishift-docker
+          image: flask-minishift-docker
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+  replicas: 5
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange    
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - flask-minishift-docker
+        from:
+          kind: ImageStreamTag
+          name: 'flask-minishift-docker:latest'
+  strategy:
+    type: Rolling
+  paused: false
+  revisionHistoryLimit: 2
+  minReadySeconds: 0

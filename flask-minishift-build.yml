@@ -1,0 +1,30 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: flask-minishift-docker
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'flask-minishift-docker:latest'
+  runPolicy: Serial
+  source:
+    git:
+      ref: main
+      uri: 'https://github.com/alirasouli1386/flask-minishift'
+    type: Git
+  strategy:
+    dockerStrategy:
+    type: Docker
+  triggers:
+    - generic:
+        secret: a03f2259bdfb0a8b
+      type: Generic
+    - github:
+        secret: ade9753d1ff9bf00
+      type: GitHub
+    - imageChange:
+        lastTriggeredImageID: >-
+          172.30.1.1:5000/openshift/python@sha256:ac50754646f0d37616515fb30467d8743fb12954260ec36c9ecb5a94499447e0
+      type: ImageChange
+    - type: ConfigChange
